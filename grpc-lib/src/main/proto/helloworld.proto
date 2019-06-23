@@ -10,7 +10,7 @@ service Simple {
     }   
 }
 
-service user {
+service User {
     rpc add (UserInfo) returns (UserInfoList) {
     }   
     rpc remove (UserInfo) returns (UserInfoList) {
