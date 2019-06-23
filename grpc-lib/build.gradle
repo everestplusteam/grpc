@@ -65,4 +65,12 @@ buildscript {
     }
 }
 
+jar { enabled = true }
+
+bootJar {
+	manifest {
+		attributes 'Start-Class': 'com.example.gRpc.GRpcApplication'
+	}
+}
+
 

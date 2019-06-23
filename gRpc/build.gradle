@@ -40,3 +40,11 @@ buildscript {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:0.8.4")
 	}
 }
+
+jar { enabled = true }
+
+bootJar {
+	manifest {
+		attributes 'Start-Class': 'com.example.gRpc.GRpcApplication'
+	}
+}
