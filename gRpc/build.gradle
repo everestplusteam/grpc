@@ -29,22 +29,11 @@ repositories {
 }
 
 
+
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compile 'net.devh:grpc-server-spring-boot-starter:1.4.0.RELEASE'
 	compile project(':grpc-lib')
+	compile ("mysql:mysql-connector-java:8.0.16")
 	testCompile('org.springframework.boot:spring-boot-starter-test')
-}
-buildscript {
-	dependencies {
-		classpath("org.springframework.boot:spring-boot-gradle-plugin:0.8.4")
-	}
-}
-
-jar { enabled = true }
-
-bootJar {
-	manifest {
-		attributes 'Start-Class': 'com.example.gRpc.GRpcApplication'
-	}
 }

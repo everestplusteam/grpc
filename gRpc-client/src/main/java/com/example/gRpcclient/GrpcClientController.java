@@ -18,11 +18,26 @@ public class GrpcClientController {
         return grpcClientService.sendMessage(name);
     }
     
-    @RequestMapping("/")
-    public String find(@RequestParam(defaultValue = "Michael") String name) {
-        return grpcUserClientService.find(name);
+    @RequestMapping("/searchAll")
+    public String find() {
+        return grpcUserClientService.find();
     }
     
-    
+//    @RequestMapping("/add")
+//    public String add() {
+//        return grpcUserClientService.add();
+//    }
+//    
+//    @RequestMapping("/searchAll")
+//    public String find() {
+//        return grpcUserClientService.find();
+//    }
+//    
+//    @RequestMapping("/searchAll")
+//    public String find() {
+//        return grpcUserClientService.find();
+//    }
+//    
+//    
     
 }

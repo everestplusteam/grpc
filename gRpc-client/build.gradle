@@ -33,5 +33,6 @@ dependencies {
 	compile project(':grpc-lib')
 	compile("net.devh:grpc-client-spring-boot-starter:1.4.0.RELEASE")
 	compile('org.springframework.boot:spring-boot-starter-web')
+	compile('com.googlecode.protobuf-java-format:protobuf-java-format:1.2')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }

@@ -2,6 +2,8 @@ package com.example.gRpcclient;
 
 import org.springframework.stereotype.Service;
 
+import com.googlecode.protobuf.format.JsonFormat;
+
 import io.grpc.Channel;
 import net.devh.examples.grpc.lib.UserGrpc;
 import net.devh.examples.grpc.lib.UserInfo;
@@ -14,9 +16,10 @@ public class GrpcUserClientService {
 	@GrpcClient("local-grpc-server")
     private Channel serverChannel;
 
-    public String find(String name) {
+    public String find() {
         UserGrpc.UserBlockingStub stub = UserGrpc.newBlockingStub(serverChannel);
-        UserInfoList response = stub.find(UserInfo.newBuilder().setName(name).build());
-        return response.getUserInfoList().get(0).getName();
+        UserInfoList response = stub.find(UserInfo.newBuilder().setName("").build());
+        String jsonFormat = JsonFormat.printToString(response);
+        return jsonFormat;
     }
 }

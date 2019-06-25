@@ -1,5 +1,11 @@
 package com.example.gRpc;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
+import com.example.sql.SQLUtil;
+
 import net.devh.examples.grpc.lib.UserGrpc;
 import net.devh.examples.grpc.lib.UserInfo;
 import net.devh.examples.grpc.lib.UserInfoList;
@@ -28,9 +34,32 @@ public class GrpcUserServerService extends UserGrpc.UserImplBase {
 	@Override
     public void find(net.devh.examples.grpc.lib.UserInfo request,
     		io.grpc.stub.StreamObserver<net.devh.examples.grpc.lib.UserInfoList> responseObserver) {
-		UserInfo userInfo = UserInfo.newBuilder().setName("qing").build();
-		UserInfoList userInfoList = UserInfoList.newBuilder().addUserInfo(userInfo).build();
-		responseObserver.onNext(userInfoList);
+		SQLUtil sqlUtil = new SQLUtil();
+		UserInfoList.Builder userInfoList = UserInfoList.newBuilder();
+		try {
+			Connection conn = sqlUtil.getConnection();
+			Statement stmt = conn.createStatement();
+			String sql = "select * from userinfo";
+			ResultSet rs = stmt.executeQuery(sql);
+			while(rs.next()){
+				int id  = rs.getInt("id");
+                String name = rs.getString("name");
+                int age = rs.getInt("age");
+                UserInfo.Builder userInfo = UserInfo.newBuilder();
+                userInfo.setId(id);
+                userInfo.setAge(age);
+                userInfo.setName(name);
+                userInfoList.addUserInfo(userInfo);
+	            }
+	            rs.close();
+	            stmt.close();
+	            conn.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			sqlUtil.closeConn();
+		}
+		responseObserver.onNext(userInfoList.build());
 	    responseObserver.onCompleted();
     }
 
