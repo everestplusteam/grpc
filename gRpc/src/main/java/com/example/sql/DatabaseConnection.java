@@ -6,23 +6,16 @@ import java.sql.PreparedStatement;
 import java.sql.Statement;
 
 public class DatabaseConnection {
-	private   String driver;
-    private  String url;
-    private  String dbName;
-    private  String password;
-    Connection conn;
-    Statement  sta;
-    PreparedStatement prepare;
+	private static String driver = "com.mysql.cj.jdbc.Driver";
+    private static String url = "jdbc:mysql://localhost:3306/mysql";
+    private static String dbName = "root";
+    private static String password = "zqq123!@#";
+    private static Connection conn;
+    private static Statement  stmt;
+    private static PreparedStatement pstmt;
     
-    public DatabaseConnection()
-    {
-        this.driver = "com.mysql.cj.jdbc.Driver";
-        this.url = "jdbc:mysql://localhost:3306/mysql";
-        this.dbName = "root";
-        this.password = "zqq123!@#";
-    }
-    
-    public Connection getConnection()throws Exception
+   
+    public static Connection getConnection()throws Exception
     {
         try {
             Class.forName(driver);
@@ -33,12 +26,12 @@ public class DatabaseConnection {
         return conn;
     }
     
-    public void closeConn()
+    public static void closeConn()
     {
         try {
-            if(this.conn!=null)
+            if(conn!=null)
             {
-                this.conn.close();
+                conn.close();
             }
         } catch (Exception e) {
             e.printStackTrace();

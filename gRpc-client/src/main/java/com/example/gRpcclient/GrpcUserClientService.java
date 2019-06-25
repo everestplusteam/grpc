@@ -22,4 +22,26 @@ public class GrpcUserClientService {
         String jsonFormat = JsonFormat.printToString(response);
         return jsonFormat;
     }
+    
+    public String add(UserInfo user) {
+    	UserGrpc.UserBlockingStub stub = UserGrpc.newBlockingStub(serverChannel);
+    	UserInfoList response = stub.add(user);
+    	String jsonFormat = JsonFormat.printToString(response);
+    	return jsonFormat;
+    }
+    
+    public String update(UserInfo user) {
+        UserGrpc.UserBlockingStub stub = UserGrpc.newBlockingStub(serverChannel);
+        UserInfoList response = stub.update(user);
+        String jsonFormat = JsonFormat.printToString(response);
+        return jsonFormat;
+    }
+    
+    public String del(int id) {
+        UserGrpc.UserBlockingStub stub = UserGrpc.newBlockingStub(serverChannel);
+        UserInfoList response = stub.remove(UserInfo.newBuilder().setId(id).build());
+        String jsonFormat = JsonFormat.printToString(response);
+        return jsonFormat;
+    }
+    
 }
