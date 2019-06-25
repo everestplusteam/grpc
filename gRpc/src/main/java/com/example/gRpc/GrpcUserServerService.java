@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-import com.example.sql.SQLUtil;
+import com.example.sql.DatabaseConnection;
 
 import net.devh.examples.grpc.lib.UserGrpc;
 import net.devh.examples.grpc.lib.UserInfo;
@@ -34,7 +34,7 @@ public class GrpcUserServerService extends UserGrpc.UserImplBase {
 	@Override
     public void find(net.devh.examples.grpc.lib.UserInfo request,
     		io.grpc.stub.StreamObserver<net.devh.examples.grpc.lib.UserInfoList> responseObserver) {
-		SQLUtil sqlUtil = new SQLUtil();
+		DatabaseConnection sqlUtil = new DatabaseConnection();
 		UserInfoList.Builder userInfoList = UserInfoList.newBuilder();
 		try {
 			Connection conn = sqlUtil.getConnection();

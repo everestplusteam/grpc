@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 
-public class SQLUtil {
+public class DatabaseConnection {
 	private   String driver;
     private  String url;
     private  String dbName;
@@ -14,7 +14,7 @@ public class SQLUtil {
     Statement  sta;
     PreparedStatement prepare;
     
-    public SQLUtil()
+    public DatabaseConnection()
     {
         this.driver = "com.mysql.cj.jdbc.Driver";
         this.url = "jdbc:mysql://localhost:3306/mysql";
