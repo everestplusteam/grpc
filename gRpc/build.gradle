@@ -31,9 +31,10 @@ repositories {
 
 
 dependencies {
-	compile('org.springframework.boot:spring-boot-starter-web')
-	compile 'net.devh:grpc-server-spring-boot-starter:1.4.0.RELEASE'
 	compile project(':grpc-lib')
-	compile ("mysql:mysql-connector-java:8.0.16")
+	compile('org.springframework.boot:spring-boot-starter-web')
+	compile ('net.devh:grpc-server-spring-boot-starter:1.4.0.RELEASE')
+	compile ('mysql:mysql-connector-java:8.0.16')
+	compile group: 'com.alibaba', name: 'druid', version: '1.1.10'
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }

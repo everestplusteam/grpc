@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import com.example.sql.DatabaseConnection;
+import com.example.sql.Druid;
 
 import net.devh.examples.grpc.lib.UserGrpc;
 import net.devh.examples.grpc.lib.UserInfo;
@@ -18,9 +18,10 @@ public class GrpcUserServerService extends UserGrpc.UserImplBase {
 	@Override
     public void add(net.devh.examples.grpc.lib.UserInfo request,
     		io.grpc.stub.StreamObserver<net.devh.examples.grpc.lib.UserInfoList> responseObserver) {
-		PreparedStatement stmt = null;	
+		Connection conn = null;
+		PreparedStatement stmt = null;
 		try {
-			Connection conn = DatabaseConnection.getConnection();			
+			conn = Druid.getConnection();			
 			String sql = "insert into userinfo(id, name, age) values(?, ?, ?)";
 			stmt = conn.prepareStatement(sql);	
 			stmt.setInt(1, request.getId());         
@@ -29,15 +30,8 @@ public class GrpcUserServerService extends UserGrpc.UserImplBase {
 			stmt.executeUpdate();
 		} catch (Exception e) {
 		    e.printStackTrace();
-		} finally {
-			 if (stmt != null) {
-	                try {
-	                	stmt.close();
-	                } catch (SQLException e) {
-	                    e.printStackTrace();
-	                }
-	         }
-			 DatabaseConnection.closeConn();		    
+		} finally {			 
+			 Druid.release(conn,stmt,null);		    
 		}
 		find(request,responseObserver);
 		
@@ -45,51 +39,39 @@ public class GrpcUserServerService extends UserGrpc.UserImplBase {
 
 	@Override
     public void remove(net.devh.examples.grpc.lib.UserInfo request, io.grpc.stub.StreamObserver<net.devh.examples.grpc.lib.UserInfoList> responseObserver) {
-        PreparedStatement st = null;
+		Connection conn = null;
+        PreparedStatement stmt = null;
         try {
-            Connection conn = DatabaseConnection.getConnection();
+            conn = Druid.getConnection();
             String sql = "delete from userinfo where id=?";
-            st = conn.prepareStatement(sql);
-            st.setInt(1, request.getId());
-            st.executeUpdate();
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, request.getId());
+            stmt.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (st != null) {
-                try {
-                    st.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            DatabaseConnection.closeConn();
+			 Druid.release(conn,stmt,null);		    
         }
         find(request, responseObserver);
     }
 
     @Override
     public void update(net.devh.examples.grpc.lib.UserInfo request, io.grpc.stub.StreamObserver<net.devh.examples.grpc.lib.UserInfoList> responseObserver) {
-        PreparedStatement st = null;
+    	Connection conn = null;
+        PreparedStatement stmt = null;
         try {
-            Connection conn = DatabaseConnection.getConnection();
+            conn = Druid.getConnection();
             String sql = "update userinfo set name=?,age=? where id=?";
-            st = conn.prepareStatement(sql);
+            stmt = conn.prepareStatement(sql);
 
-            st.setString(1, request.getName());
-            st.setInt(2, request.getAge());
-            st.setInt(3, request.getId());
-            st.executeUpdate();
+            stmt.setString(1, request.getName());
+            stmt.setInt(2, request.getAge());
+            stmt.setInt(3, request.getId());
+            stmt.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (st != null) {
-                try {
-                    st.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            DatabaseConnection.closeConn();
+			 Druid.release(conn,stmt,null);		    
         }
         find(request, responseObserver);
     }
@@ -98,13 +80,15 @@ public class GrpcUserServerService extends UserGrpc.UserImplBase {
 	@Override
     public void find(net.devh.examples.grpc.lib.UserInfo request,
     		io.grpc.stub.StreamObserver<net.devh.examples.grpc.lib.UserInfoList> responseObserver) {
-		UserInfoList.Builder userInfoList = UserInfoList.newBuilder();
+		Connection conn = null;
 		Statement stmt = null;
+		ResultSet rs = null;
+		UserInfoList.Builder userInfoList = UserInfoList.newBuilder();
 		try {
-			Connection conn = DatabaseConnection.getConnection();
+			conn = Druid.getConnection();
 			String sql = "select * from userinfo";
 			stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery(sql);
+			rs = stmt.executeQuery(sql);
 			while(rs.next()){
 				int id  = rs.getInt("id");
                 String name = rs.getString("name");
@@ -114,14 +98,11 @@ public class GrpcUserServerService extends UserGrpc.UserImplBase {
                 userInfo.setAge(age);
                 userInfo.setName(name);
                 userInfoList.addUserInfo(userInfo);
-	        }
-            rs.close();
-            stmt.close();
-            conn.close();
+	        }            
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			DatabaseConnection.closeConn();
+			 Druid.release(conn,stmt,rs);		    
 		}
 		responseObserver.onNext(userInfoList.build());
 	    responseObserver.onCompleted();
@@ -130,14 +111,16 @@ public class GrpcUserServerService extends UserGrpc.UserImplBase {
 	@Override
     public void findById(net.devh.examples.grpc.lib.UserInfo request,
     		io.grpc.stub.StreamObserver<net.devh.examples.grpc.lib.UserInfoList> responseObserver) {
-        PreparedStatement st = null;
+		Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
 		UserInfoList.Builder userInfoList = UserInfoList.newBuilder();
 		try {
-			Connection conn = DatabaseConnection.getConnection();
+			conn = Druid.getConnection();
 			String sql = "select * from userinfo where id=?";
-            st = conn.prepareStatement(sql);
-            st.setInt(1, request.getId());
-            ResultSet rs = st.executeQuery();
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, request.getId());
+            rs = stmt.executeQuery();
 			while(rs.next()){
 				int id  = rs.getInt("id");
                 String name = rs.getString("name");
@@ -148,13 +131,10 @@ public class GrpcUserServerService extends UserGrpc.UserImplBase {
                 userInfo.setName(name);
                 userInfoList.addUserInfo(userInfo);
 	        }
-            rs.close();
-            st.close();
-            conn.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			DatabaseConnection.closeConn();
+			 Druid.release(conn,stmt,rs);		    
 		}
 		responseObserver.onNext(userInfoList.build());
 	    responseObserver.onCompleted();
