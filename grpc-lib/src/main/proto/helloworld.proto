@@ -19,8 +19,8 @@ service User {
     }   
     rpc find (UserInfo) returns (UserInfoList) {
     }   
-//     rpc find () returns (UserInfoList) {
-//     }   
+    rpc findById (UserInfo) returns (UserInfoList) {
+    }   
 }
 
 message HelloRequest {

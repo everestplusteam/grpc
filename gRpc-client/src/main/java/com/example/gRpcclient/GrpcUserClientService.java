@@ -23,6 +23,13 @@ public class GrpcUserClientService {
         return jsonFormat;
     }
     
+    public String findById(UserInfo user) {
+        UserGrpc.UserBlockingStub stub = UserGrpc.newBlockingStub(serverChannel);
+        UserInfoList response = stub.findById(user);
+        String jsonFormat = JsonFormat.printToString(response);
+        return jsonFormat;
+    }
+    
     public String add(UserInfo user) {
     	UserGrpc.UserBlockingStub stub = UserGrpc.newBlockingStub(serverChannel);
     	UserInfoList response = stub.add(user);

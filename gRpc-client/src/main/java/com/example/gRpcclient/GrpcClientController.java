@@ -25,6 +25,12 @@ public class GrpcClientController {
 	public String find() {
 		return grpcUserClientService.find();
 	}
+	
+	@RequestMapping(value = "/search", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+	public String findById(@RequestParam("id") int id) {
+		UserInfo user = UserInfo.newBuilder().setId(id).build();
+		return grpcUserClientService.findById(user);
+	}
 
 	@RequestMapping(value = "/add", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
 	public String add(@RequestParam("name") String name, @RequestParam("age") int age) {
