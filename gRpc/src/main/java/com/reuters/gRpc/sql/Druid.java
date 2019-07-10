@@ -1,4 +1,4 @@
-package com.example.sql;
+package com.reuters.gRpc.sql;
 
 import java.io.InputStream;
 import java.sql.Connection;

@@ -1,13 +1,9 @@
 buildscript {
 	ext {
 		springBootVersion = '2.0.2.RELEASE'
-	}
-        
+	}        
  	repositories {
-		mavenCentral()
-		maven { url 'https://mvnrepository.com/artifact'}
-		maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
-        maven { url 'http://maven.aliyun.com/nexus/content/repositories/jcenter'}
+		jcenter()		
 	}
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
@@ -19,16 +15,12 @@ apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 
-
-group = 'com.example'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
 
 repositories {
-	mavenCentral()
+	jcenter()
 }
-
-
 
 dependencies {
 	compile project(':grpc-lib')

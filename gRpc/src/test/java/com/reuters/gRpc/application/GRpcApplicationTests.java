@@ -1,4 +1,4 @@
-package com.example.gRpc;
+package com.reuters.gRpc.application;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -1,12 +1,12 @@
-package com.example.gRpc;
+package com.reuters.gRpc;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class GRpcApplication {
+public class UserServerApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(GRpcApplication.class, args);
+		SpringApplication.run(UserServerApplication.class, args);
 	}
 }
