@@ -1,27 +1,24 @@
 apply plugin: 'java'
 apply plugin: 'com.google.protobuf'
-apply plugin: 'idea'
+apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 
 buildscript {
 	ext {
 		springBootVersion = '2.0.2.RELEASE'
-	}
-        
+	}        
  	repositories {
-		mavenCentral()
-		maven{ url 'https://mvnrepository.com/artifact'}
-		maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
-        maven{ url 'http://maven.aliyun.com/nexus/content/repositories/jcenter'}
+		jcenter()
 	}
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+		classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.4'
+		
 	}
 }
 
 repositories {
-    maven { url "https://plugins.gradle.org/m2/" }
-	maven{ url 'https://mvnrepository.com/artifact'}
+    jcenter()
 }
 
 dependencies {
@@ -29,7 +26,6 @@ dependencies {
     compile "io.grpc:grpc-protobuf:1.10.0"
     compile "io.grpc:grpc-stub:1.10.0"
 }
-
 
 protobuf {
     protoc {
@@ -55,16 +51,6 @@ protobuf {
     }
 }
 
-buildscript {
-    repositories {
-        maven { url "https://plugins.gradle.org/m2/" }
-        maven { url 'https://mvnrepository.com/artifact'}
-    }
-    dependencies {
-        classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.4'
-    }
-}
-
 jar { enabled = true }
 
 bootJar {
@@ -72,5 +58,3 @@ bootJar {
 		attributes 'Start-Class': 'com.example.gRpc.GRpcApplication'
 	}
 }
-
-

@@ -1,14 +1,8 @@
 syntax = "proto3";
 
 option java_multiple_files = true;
-option java_package = "net.devh.examples.grpc.lib";
-option java_outer_classname = "HelloWorldProto";
-
-// The greeting service definition.
-service Simple {
-    rpc SayHello (HelloRequest) returns (HelloReply) {
-    }   
-}
+option java_package = "com.reuters.proto.lib";
+option java_outer_classname = "UserInfoProto";
 
 service User {
     rpc add (UserInfo) returns (UserInfoList) {
@@ -20,15 +14,9 @@ service User {
     rpc find (UserInfo) returns (UserInfoList) {
     }   
     rpc findById (UserInfo) returns (UserInfoList) {
+    } 
+    rpc findFromMem (UserInfo) returns (UserInfoList) {
     }   
-}
-
-message HelloRequest {
-    string name = 1;
-}
-
-message HelloReply {
-    string message = 1;
 }
 
 message UserInfo {
@@ -40,4 +28,3 @@ message UserInfo {
 message UserInfoList {
     repeated UserInfo userInfo = 1;
 }
-
